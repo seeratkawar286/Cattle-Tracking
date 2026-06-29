@@ -13,7 +13,7 @@
  */
 
 const router  = require('express').Router();
-const auth    = require('../middleware/auth');
+const auth      = require('../../middleware/auth');
 const {
   getDayHistory, getNDayHistory,
   totalDistanceKm, speedVariabilityIndex,
@@ -23,8 +23,8 @@ const {
   sevenDayAvgDistance, nDayAvgActivity,
   accelerationEvents, clamp100,
 } = require('../analytics/analyticsEngine');
-const { CattleTag, LocationHistory, AlarmEvent } = require('../models/CattleTag');
-const { DailyAnalytics, PastureRotation } = require('../models/Analytics');
+const { CattleTag, LocationHistory, AlarmEvent } = require('../../models/CattleTag');
+const { DailyAnalytics, PastureRotation } = require('../../models/Analytics');
 
 router.use(auth);
 
