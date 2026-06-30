@@ -12,9 +12,9 @@
  */
 
 const router = require('express').Router();
-const auth   = require('../middleware/auth');
-const { CattleTag, LocationHistory } = require('../models/CattleTag');
-const { WaterPoint, FeedZone, PastureRotation } = require('../models/Analytics');
+const auth   = require('../../middleware/auth');
+const { CattleTag, LocationHistory } = require('../../models/CattleTag');
+const { WaterPoint, FeedZone, PastureRotation } = require('../../models/Analytics');
 const {
   getDayHistory, totalDistanceKm,
   activeHours, grazingHours,
