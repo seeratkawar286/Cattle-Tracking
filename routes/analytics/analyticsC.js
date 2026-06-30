@@ -4,7 +4,7 @@
  */
 
 const router = require('express').Router();
-const auth   = require('../middleware/auth');
+const auth   = require('../../middleware/auth');
 const {
   getDayHistory, getNDayHistory,
   totalDistanceKm, activeHours,
@@ -13,8 +13,8 @@ const {
   WATER_DIST_M,
   grazingZoneMap,
 } = require('../analytics/analyticsEngine');
-const { CattleTag, LocationHistory, AlarmEvent } = require('../models/CattleTag');
-const { WaterPoint, FeedZone, HeatEvent } = require('../models/Analytics');
+const { CattleTag, LocationHistory, AlarmEvent } = require('../../models/CattleTag');
+const { WaterPoint, FeedZone, HeatEvent } = require('../../models/Analytics');
 
 router.use(auth);
 
