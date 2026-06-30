@@ -4,15 +4,15 @@
  */
 
 const router = require('express').Router();
-const auth   = require('../middleware/auth');
+const auth   = require('../../middleware/auth');
 const {
   getDayHistory, getNDayHistory,
   totalDistanceKm, activeHours,
   grazingHours, haversineM,
   clamp100, isNightHour,
 } = require('../analytics/analyticsEngine');
-const { CattleTag, LocationHistory, AlarmEvent, Geofence } = require('../models/CattleTag');
-const { HeatEvent } = require('../models/Analytics');
+const { CattleTag, LocationHistory, AlarmEvent, Geofence } = require('../../models/CattleTag');
+const { HeatEvent } = require('../../models/Analytics');
 
 router.use(auth);
 
