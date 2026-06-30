@@ -97,11 +97,31 @@ const AlarmEventSchema = new Schema(
   { timestamps: true }
 );
 
+/**
+ * Geofence
+ * Per-animal (or shared) boundary definition. Kept simple — a circular
+ * zone (center + radius) — matching the same approach used in
+ * services/geofenceService.js. Extend with a polygon field later if
+ * pasture shapes aren't roughly circular.
+ */
+const GeofenceSchema = new Schema(
+  {
+    imei: { type: String, default: null, index: true }, // null = applies farm-wide
+    name: { type: String, default: 'Default Geofence' },
+    centerLat: { type: Number, required: true },
+    centerLng: { type: Number, required: true },
+    radiusMeters: { type: Number, required: true },
+    active: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
+
 // Avoid "OverwriteModelError" if this file is required more than once in
 // the same process (common with hot-reload/dev servers).
 const CattleTag = mongoose.models.CattleTag || mongoose.model('CattleTag', CattleTagSchema);
 const LocationHistory =
   mongoose.models.LocationHistory || mongoose.model('LocationHistory', LocationHistorySchema);
 const AlarmEvent = mongoose.models.AlarmEvent || mongoose.model('AlarmEvent', AlarmEventSchema);
+const Geofence = mongoose.models.Geofence || mongoose.model('Geofence', GeofenceSchema);
 
-module.exports = { CattleTag, LocationHistory, AlarmEvent };
+module.exports = { CattleTag, LocationHistory, AlarmEvent, Geofence };
