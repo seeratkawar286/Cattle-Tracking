@@ -19,6 +19,11 @@ const { LocationHistory, AlarmEvent } = require('../../models/CattleTag');
  */
 
 const EARTH_RADIUS_KM = 6371;
+const EARTH_RADIUS_M = 6371000;
+
+// Default "close enough to count as at the water point" distance, in
+// meters. Tune this once real GPS accuracy in the field is known.
+const WATER_DIST_M = 50;
 
 function toRadians(deg) {
   return (deg * Math.PI) / 180;
@@ -33,6 +38,26 @@ function haversineKm(lat1, lng1, lat2, lng2) {
     Math.sin(dLat / 2) ** 2 + Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLng / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return EARTH_RADIUS_KM * c;
+}
+
+/**
+ * Same great-circle calculation as haversineKm, but returns meters —
+ * used for fine-grained proximity checks (e.g. "is the animal within
+ * WATER_DIST_M of this water point?") where kilometers is the wrong unit.
+ */
+function haversineM(lat1, lng1, lat2, lng2) {
+  return haversineKm(lat1, lng1, lat2, lng2) * 1000;
+}
+
+/**
+ * Whether a given timestamp falls in the "night" window. Matches the
+ * HCS048 protocol's own night-power-saving window (19:00-07:00 UTC) from
+ * the SAVE/APOF commands, so "night" here means the same thing the
+ * device firmware already means by it.
+ */
+function isNightHour(date = new Date()) {
+  const hour = new Date(date).getUTCHours();
+  return hour >= 19 || hour < 7;
 }
 
 function clamp100(value) {
@@ -260,4 +285,7 @@ module.exports = {
   nDayAvgActivity,
   accelerationEvents,
   clamp100,
+  haversineM,
+  isNightHour,
+  WATER_DIST_M,
 };
