@@ -51,9 +51,65 @@ const PastureRotationSchema = new Schema(
   { timestamps: true }
 );
 
+/**
+ * WaterPoint
+ * A named water-source location. Used with WATER_DIST_M / haversineM in
+ * analyticsEngine.js to check whether an animal's location is near a
+ * known water source.
+ */
+const WaterPointSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    latitude: { type: Number, required: true },
+    longitude: { type: Number, required: true },
+    active: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
+
+/**
+ * FeedZone
+ * A named feeding-area location/boundary, same circular-zone approach
+ * as Geofence/PastureRotation.
+ */
+const FeedZoneSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    centerLat: { type: Number, required: true },
+    centerLng: { type: Number, required: true },
+    radiusMeters: { type: Number, default: 50 },
+    active: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
+
+/**
+ * HeatEvent
+ * Records a possible estrus/heat-behaviour flag for an animal. This is a
+ * DERIVED signal, not a direct device reading — the HCS048 has no
+ * estrus-detection capability. It should only be written by logic that
+ * combines available signals (e.g. elevated speedVariabilityIndex,
+ * increased movementCount, time-of-day) as a soft flag for a human to
+ * review, not an automatic diagnosis.
+ */
+const HeatEventSchema = new Schema(
+  {
+    imei: { type: String, required: true, index: true },
+    timestamp: { type: Date, required: true, default: Date.now, index: true },
+    confidence: { type: Number, min: 0, max: 100, default: 0 }, // 0-100, see clamp100()
+    basis: { type: String, default: null }, // free-text note on what signals triggered this
+    reviewed: { type: Boolean, default: false },
+    confirmed: { type: Boolean, default: null }, // null = not yet reviewed by a human
+  },
+  { timestamps: true }
+);
+
 const DailyAnalytics =
   mongoose.models.DailyAnalytics || mongoose.model('DailyAnalytics', DailyAnalyticsSchema);
 const PastureRotation =
   mongoose.models.PastureRotation || mongoose.model('PastureRotation', PastureRotationSchema);
+const WaterPoint = mongoose.models.WaterPoint || mongoose.model('WaterPoint', WaterPointSchema);
+const FeedZone = mongoose.models.FeedZone || mongoose.model('FeedZone', FeedZoneSchema);
+const HeatEvent = mongoose.models.HeatEvent || mongoose.model('HeatEvent', HeatEventSchema);
 
-module.exports = { DailyAnalytics, PastureRotation };
+module.exports = { DailyAnalytics, PastureRotation, WaterPoint, FeedZone, HeatEvent };
