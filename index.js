@@ -121,7 +121,7 @@ app.use('/api/v1',           analyticsConfig);  // config + dashboard
 app.get('/health', (_, res) => res.json({
   status:  'ok',
   service: 'sylCloud HCS048 Server',
-version: require('./package.json').version,
+version: require('../package.json').version,
   uptime:  Math.floor(process.uptime()),
   time:    new Date().toISOString(),
 }));
