@@ -13,7 +13,7 @@ COPY package.json ./
 RUN npm install --omit=dev && npm cache clean --force
 
 # Copy source
-COPY src/ ./src/
+COPY . .
 
 # Create logs directory
 RUN mkdir -p logs && chown -R sylcloud:sylcloud /app
