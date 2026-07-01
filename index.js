@@ -309,8 +309,8 @@ mongoose.connect(MONGO, MONGO_OPTS)
 
     sleepDetector.start();
 
-    console.log(`[OK] sylCloud HCS048 Server v${require('../package.json').version} running`);
-    console.log(`[OK] Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(\[OK] sylCloud HCS048 Server v${require('../package.json').version} running`);`
+  console.log(`[OK] Environment: ${process.env.NODE_ENV || 'development'}`);
   })
   .catch(err => {
     console.error('[FATAL] MongoDB connection failed:', err.message);
